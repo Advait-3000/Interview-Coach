@@ -21,7 +21,7 @@
                 <Insets left="22" right="22" top="14" bottom="14"/>
             </padding>
             <Label fx:id="appTitle" text="Interview Coach" styleClass="label-title"/>
-            <Separator flexGrow="1.0"/>
+            <Separator HBox.hgrow="ALWAYS"/>
             <Label fx:id="userLabel" styleClass="label-helper"/>
             <Button fx:id="logoutButton"
                     text="Sign out"

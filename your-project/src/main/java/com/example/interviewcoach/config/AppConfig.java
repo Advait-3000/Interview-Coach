@@ -64,11 +64,16 @@ public class AppConfig {
 
     public boolean isDatabaseAvailable() {
         if (connectionProvider == null) {
+            log.error("Database connection provider is not configured. Check DB_HOST, DB_PORT, DB_NAME, and DB_USER.");
             return false;
         }
+
         try (var c = connectionProvider.getConnection()) {
             return c != null && !c.isClosed();
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            log.error("Database connection failed: {}: {}",
+                    e.getClass().getSimpleName(),
+                    e.getMessage(), e);
             return false;
         }
     }

@@ -44,7 +44,7 @@ public class ConnectionProvider implements AutoCloseable {
     private String jdbcUrl() {
         return "jdbc:mysql://" + host + ":" + port + "/" + database
                 + "?useSSL=false"
-                + "&allowPublicKeyRetrieval=false"
+                + "&allowPublicKeyRetrieval=true"
                 + "&serverTimezone=UTC"
                 + "&characterEncoding=UTF-8"
                 + "&driverMySQLCompatibility=8.0";

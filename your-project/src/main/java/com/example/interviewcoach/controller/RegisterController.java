@@ -48,7 +48,13 @@ public class RegisterController {
 
     @FXML
     private void handleCreateAccount() {
+        log.info("Create Account clicked");
+        log.info("Stage initialized: {}", stage != null);
+        log.info("AuthService initialized: {}", authService != null);
+
         if (stage == null || authService == null) {
+            log.error("Registration stopped: dependencies are not initialized");
+            errorLabel.setText("Registration is not initialized. Please try again.");
             return;
         }
 
@@ -95,9 +101,9 @@ public class RegisterController {
     @FXML
     private void handleBack() {
         if (stage == null) {
-            return;
+            stage.close();
         }
-        stage.close();
+        // stage.close();
     }
 
     private boolean validateName(String name, Label label) {

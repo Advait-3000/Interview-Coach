@@ -14,20 +14,18 @@ import java.util.Objects;
 
 public class RegisterView {
 
-    private static final Logger log = LoggerFactory.getLogger(RegisterView.class);
-
-    private Stage ownerStage;
+    private static final Logger log =
+            LoggerFactory.getLogger(RegisterView.class);
 
     public void show(Stage owner, AuthService authService) {
-        this.ownerStage = owner;
         try {
             FXMLLoader loader = new FXMLLoader(
-                    Objects.requireNonNull(getClass().getResource("/fxml/RegisterView.fxml")));
-            VBox root = loader.load();
+                    Objects.requireNonNull(
+                            getClass().getResource("/fxml/RegisterView.fxml")
+                    )
+            );
 
-            RegisterController controller = loader.getController();
-            controller.setAuthService(authService);
-            controller.setStage(owner);
+            VBox root = loader.load();
 
             Stage dialog = new Stage();
             dialog.initOwner(owner);
@@ -37,13 +35,26 @@ public class RegisterView {
 
             Scene scene = new Scene(root, 460, 620);
             scene.getStylesheets().add(
-                    getClass().getResource("/css/app.css").toExternalForm());
+                    Objects.requireNonNull(
+                            getClass().getResource("/css/app.css")
+                    ).toExternalForm()
+            );
+
             dialog.setScene(scene);
+
+            RegisterController controller = loader.getController();
+            controller.setAuthService(authService);
+            controller.setStage(dialog); // Pass the registration window
+
             dialog.show();
+
             log.info("Registration dialog shown");
+
         } catch (IOException e) {
             log.error("Failed to load registration screen", e);
-            throw new RuntimeException("Failed to load registration screen", e);
+            throw new RuntimeException(
+                    "Failed to load registration screen", e
+            );
         }
     }
 }
