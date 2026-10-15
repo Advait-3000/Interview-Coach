@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.interviewcoach.controller.HomeController"
+            styleClass="root"
+            stylesheets="@../css/app.css"
+            minWidth="900"
+            minHeight="600"
+            prefWidth="1280"
+            prefHeight="800">
+
+    <top>
+        <HBox spacing="14" alignment="CENTER_LEFT" styleClass="surface">
+            <padding>
+                <Insets left="22" right="22" top="14" bottom="14"/>
+            </padding>
+            <Label fx:id="appTitle" text="Interview Coach" styleClass="label-title"/>
+            <Separator flexGrow="1.0"/>
+            <Label fx:id="userLabel" styleClass="label-helper"/>
+            <Button fx:id="logoutButton"
+                    text="Sign out"
+                    styleClass="secondary-button"
+                    prefWidth="110"
+                    onAction="#handleLogout"/>
+        </HBox>
+    </top>
+
+    <center>
+        <Pane fx:id="contentPane" styleClass="root"/>
+    </center>
+
+</BorderPane>
