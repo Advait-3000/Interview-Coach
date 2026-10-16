@@ -4,7 +4,9 @@ import com.example.interviewcoach.model.AuthenticatedUser;
 import com.example.interviewcoach.service.AuthService;
 import com.example.interviewcoach.util.Launcher;
 import com.example.interviewcoach.config.AppConfig;
+import com.example.interviewcoach.repository.AttemptRepositoryAnswers;
 import com.example.interviewcoach.repository.AttemptRepository;
+import com.example.interviewcoach.service.PerformanceService;
 import com.example.interviewcoach.repository.QuestionRepository;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -141,12 +143,42 @@ public class HomeController {
         historyButton.setMaxWidth(Double.MAX_VALUE);
         historyButton.setPrefHeight(48);
 
-        historyButton.setOnAction(event ->
+        historyButton.setOnAction(event -> {
+            var provider = AppConfig.getInstance().getConnectionProvider();
+
+            if (provider == null) {
                 showMessage(
-                        "Interview History",
-                        "Interview history will be available here."
-                )
-        );
+                        "Database Error",
+                        "Database connection is unavailable."
+                );
+                return;
+            }
+
+            try {
+                var attemptRepository = new AttemptRepository(provider);
+                var answerRepository = new AttemptRepositoryAnswers(provider);
+                var questionRepository = new QuestionRepository(provider);
+
+                var performanceService = new PerformanceService(
+                        attemptRepository,
+                        answerRepository,
+                        questionRepository
+                );
+
+                new HistoryView().show(
+                        stage,
+                        currentUser,
+                        performanceService,
+                        this
+                );
+
+            } catch (Exception ex) {
+                showMessage(
+                        "History Error",
+                        "Could not open interview history: " + ex.getMessage()
+                );
+            }
+        });
 
         HBox actions = new HBox(14, practiceButton, historyButton);
         actions.setAlignment(Pos.CENTER_LEFT);
