@@ -3,6 +3,9 @@ package com.example.interviewcoach.controller;
 import com.example.interviewcoach.model.AuthenticatedUser;
 import com.example.interviewcoach.service.AuthService;
 import com.example.interviewcoach.util.Launcher;
+import com.example.interviewcoach.config.AppConfig;
+import com.example.interviewcoach.repository.AttemptRepository;
+import com.example.interviewcoach.repository.QuestionRepository;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -108,12 +111,31 @@ public class HomeController {
                 "-fx-font-weight: bold;"
         );
 
-        practiceButton.setOnAction(event ->
+        practiceButton.setOnAction(event -> {
+            var provider = AppConfig.getInstance().getConnectionProvider();
+
+            if (provider == null) {
+                showMessage("Database Error", "Database connection is unavailable.");
+                return;
+            }
+
+            try {
+                var questionRepository = new QuestionRepository(provider);
+                var attemptRepository = new AttemptRepository(provider);
+
+                new InterviewSetupView(
+                        stage,
+                        questionRepository,
+                        attemptRepository
+                ).show();
+
+            } catch (Exception ex) {
                 showMessage(
-                        "Interview Practice",
-                        "Interview practice is the next feature to implement."
-                )
-        );
+                        "Interview Setup Error",
+                        "Could not open interview setup: " + ex.getMessage()
+                );
+            }
+        });
 
         Button historyButton = new Button("View Interview History");
         historyButton.setMaxWidth(Double.MAX_VALUE);
