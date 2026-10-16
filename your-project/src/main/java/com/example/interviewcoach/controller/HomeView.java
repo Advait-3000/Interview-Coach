@@ -68,11 +68,14 @@ public class HomeView {
         alert.showAndWait();
     }
 
+    
     public static void navigateToStudentDashboard(
             Stage stage,
-            AuthenticatedUser user
+            AuthenticatedUser user,
+            AuthService authService
     ) {
         HomeView homeView = new HomeView();
-        homeView.show(stage, user, null);
+        homeView.show(stage, user, authService);
     }
+
 }

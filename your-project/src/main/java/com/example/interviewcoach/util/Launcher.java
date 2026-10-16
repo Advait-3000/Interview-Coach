@@ -21,6 +21,7 @@ public final class Launcher {
         new LoginView().show(stage, authService);
     }
 
+    
     public static void navigateToDashboard(AuthenticatedUser user, Stage stage) {
         if (user == null) {
             navigateToLogin(stage);
@@ -29,15 +30,22 @@ public final class Launcher {
 
         SessionService.setCurrentUser(user);
 
+        var provider = AppConfig.getInstance().getConnectionProvider();
+        var userRepository = new UserRepository(provider);
+        var authService = new AuthService(userRepository);
+
         switch (user.role()) {
             case ADMIN -> HomeView.navigateToAdminDashboard(stage, user);
-            case STUDENT -> HomeView.navigateToStudentDashboard(stage, user);
+            case STUDENT -> HomeView.navigateToStudentDashboard(
+                    stage, user, authService
+            );
             default -> {
                 SessionService.clear();
                 navigateToLogin(stage);
             }
         }
     }
+
 
     public static void logout(Stage stage) {
         SessionService.clear();

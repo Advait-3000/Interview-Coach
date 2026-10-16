@@ -277,29 +277,33 @@ public class QuestionRepository {
             throw new RepositoryException("Unable to delete question", e);
         }
     }
-
-    public List<AttemptQuestion> snapshotAttemptQuestions(long attemptId,
-                                                           List<Question> questions) {
-        if (questions.isEmpty()) {
+  
+    public List<AttemptQuestion> snapshotAttemptQuestions(
+            long attemptId,
+            List<Question> questions
+    ) {
+        if (questions == null || questions.isEmpty()) {
             return List.of();
         }
 
         String sql = """
-                INSERT INTO attempt_questions (attempt_id, question_id, question_order,
-                                               prompt_snapshot, option_a_snapshot,
-                                               option_b_snapshot, option_c_snapshot,
-                                               option_d_snapshot, correct_option_snapshot,
-                                               explanation_snapshot, category_snapshot,
-                                               difficulty_snapshot)
+                INSERT INTO attempt_questions (
+                    attempt_id, question_id, question_order,
+                    prompt_snapshot, option_a_snapshot,
+                    option_b_snapshot, option_c_snapshot,
+                    option_d_snapshot, correct_option_snapshot,
+                    explanation_snapshot, category_snapshot,
+                    difficulty_snapshot
+                )
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
-        List<AttemptQuestion> snapshot = new ArrayList<>();
         try (Connection conn = provider.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql,
-                     new String[]{"id"})) {
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             for (int i = 0; i < questions.size(); i++) {
                 Question q = questions.get(i);
+
                 stmt.setLong(1, attemptId);
                 stmt.setLong(2, q.getId());
                 stmt.setInt(3, i + 1);
@@ -312,29 +316,25 @@ public class QuestionRepository {
                 stmt.setString(10, q.getExplanation());
                 stmt.setString(11, q.getCategoryName());
                 stmt.setString(12, q.getDifficulty().name());
+
                 stmt.addBatch();
             }
+
             stmt.executeBatch();
 
-            try (ResultSet generated = stmt.getGeneratedKeys()) {
-                while (generated.next()) {
-                    long snapshotId = generated.getLong(1);
-                    Question q = questions.get((int) (snapshotId % questions.size()));
-                    snapshot.add(new AttemptQuestion(
-                            snapshotId, attemptId, q.getId(),
-                            (int) (snapshotId % questions.size()) + 1,
-                            q.getPrompt(), q.getOptionA(), q.getOptionB(),
-                            q.getOptionC(), q.getOptionD(),
-                            q.getCorrectOption(), q.getExplanation(),
-                            q.getCategoryName(), q.getDifficulty()
-                    ));
-                }
-            }
         } catch (SQLException e) {
-            log.error("Failed to snapshot attempt questions for attemptId={}", attemptId, e);
-            throw new RepositoryException("Unable to snapshot attempt questions", e);
+            log.error(
+                    "Failed to snapshot questions for attemptId={}",
+                    attemptId,
+                    e
+            );
+            throw new RepositoryException(
+                    "Unable to snapshot attempt questions",
+                    e
+            );
         }
-        return snapshot;
+
+        return listAttemptQuestions(attemptId);
     }
 
     public List<AttemptQuestion> listAttemptQuestions(long attemptId) {
