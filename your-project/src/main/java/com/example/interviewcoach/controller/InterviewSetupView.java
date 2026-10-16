@@ -142,13 +142,19 @@ public class InterviewSetupView {
                         questions.size()
                 );
 
-                questionRepository.snapshotAttemptQuestions(
+                
+                var snapshots = questionRepository.snapshotAttemptQuestions(
                         attempt.getId(), questions
                 );
 
-                showError(
-                        "Attempt created successfully. The interview screen is the next step."
-                );
+                new InterviewView(
+                        stage,
+                        attemptRepository,
+                        questionRepository,
+                        attempt,
+                        snapshots
+                ).show();
+
 
             } catch (Exception ex) {
                 showError("Could not start interview: " + ex.getMessage());
