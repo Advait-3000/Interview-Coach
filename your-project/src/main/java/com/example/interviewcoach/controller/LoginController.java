@@ -42,22 +42,12 @@ public class LoginController {
         this.stage = stage;
     }
 
-    @FXML
-    public void initialize() {
-        errorLabel.setText("");
-        statusLabel.setText("");
-
-        if (authService != null && !authService.isLoggedIn()) {
-            return;
-        }
-
-        AuthenticatedUser current = authService != null
-                ? authService.getCurrentUser()
-                : null;
-        if (current != null) {
-            Launcher.navigateToDashboard(current, stage);
-        }
-    }
+    // @FXML
+    // public void initialize() {
+    //     if (logoutButton != null) {
+    //         logoutButton.setDisable(false);
+    //     }
+    // }
 
     @FXML
     private void handleLogin() {

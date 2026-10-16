@@ -68,17 +68,11 @@ public class HomeView {
         alert.showAndWait();
     }
 
-    public static void navigateToStudentDashboard(Stage stage, AuthenticatedUser user) {
-        // Use the existing HomeView instance if available, otherwise create new
+    public static void navigateToStudentDashboard(
+            Stage stage,
+            AuthenticatedUser user
+    ) {
         HomeView homeView = new HomeView();
         homeView.show(stage, user, null);
-        // Student dashboard will be shown via controller
-        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
-                javafx.scene.control.Alert.AlertType.INFORMATION);
-        alert.setTitle("Student Dashboard");
-        alert.setHeaderText("Student dashboard");
-        alert.setContentText("Student dashboard is under development.");
-        alert.initOwner(stage);
-        alert.showAndWait();
     }
 }
