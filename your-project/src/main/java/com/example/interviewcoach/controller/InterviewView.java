@@ -70,29 +70,42 @@ public class InterviewView {
         }
 
         progressLabel = new Label();
-        progressLabel.setStyle("-fx-text-fill: #64748B; -fx-font-size: 14px;");
+        progressLabel.getStyleClass().add("badge-primary");
+
+        answeredLabel = new Label();
+        answeredLabel.getStyleClass().add("badge-neutral");
 
         questionLabel = new Label();
         questionLabel.setWrapText(true);
-        questionLabel.setFont(Font.font("System", FontWeight.BOLD, 21));
-
-        answeredLabel = new Label();
-        answeredLabel.setStyle("-fx-text-fill: #64748B;");
+        questionLabel.setFont(Font.font("Segoe UI", FontWeight.BOLD, 20));
+        questionLabel.setStyle("-fx-text-fill: #142D52; -fx-line-spacing: 4px;");
 
         optionGroup = new ToggleGroup();
 
-        VBox optionBox = new VBox(14);
+        VBox optionBox = new VBox(12);
         for (int i = 0; i < options.length; i++) {
             options[i] = new RadioButton();
             options[i].setToggleGroup(optionGroup);
             options[i].setWrapText(true);
-            options[i].setStyle("-fx-font-size: 15px;");
+            options[i].setMaxWidth(Double.MAX_VALUE);
+            options[i].getStyleClass().add("quiz-option");
             optionBox.getChildren().add(options[i]);
         }
 
-        previousButton = new Button("Previous");
-        nextButton = new Button("Next");
+        previousButton = new Button("← Previous");
+        previousButton.getStyleClass().add("secondary-button");
+        previousButton.setPrefWidth(120);
+        previousButton.setPrefHeight(40);
+
+        nextButton = new Button("Next →");
+        nextButton.getStyleClass().add("secondary-button");
+        nextButton.setPrefWidth(120);
+        nextButton.setPrefHeight(40);
+
         submitButton = new Button("Submit Interview");
+        submitButton.getStyleClass().add("primary-button");
+        submitButton.setPrefWidth(160);
+        submitButton.setPrefHeight(40);
 
         previousButton.setOnAction(event -> {
             saveCurrentAnswer();
@@ -112,31 +125,55 @@ public class InterviewView {
 
         submitButton.setOnAction(event -> submitInterview());
 
-        HBox navigation = new HBox(
-                12, previousButton, nextButton, submitButton
-        );
-        navigation.setAlignment(Pos.CENTER_LEFT);
+        HBox navButtons = new HBox(12, previousButton, nextButton);
+        navButtons.setAlignment(Pos.CENTER_LEFT);
 
-        VBox root = new VBox(
-                24,
-                progressLabel,
+        javafx.scene.layout.Region navSpacer = new javafx.scene.layout.Region();
+        HBox.setHgrow(navSpacer, javafx.scene.layout.Priority.ALWAYS);
+
+        HBox navigation = new HBox(navButtons, navSpacer, submitButton);
+        navigation.setAlignment(Pos.CENTER_LEFT);
+        navigation.setPadding(new Insets(12, 0, 0, 0));
+
+        // Top Status Header inside Card
+        HBox topStatus = new HBox(12, progressLabel, answeredLabel);
+        topStatus.setAlignment(Pos.CENTER_LEFT);
+
+        javafx.scene.control.Separator separator = new javafx.scene.control.Separator();
+
+        VBox card = new VBox(
+                20,
+                topStatus,
+                separator,
                 questionLabel,
                 optionBox,
-                answeredLabel,
+                new javafx.scene.control.Separator(),
                 navigation
         );
 
-        root.setPadding(new Insets(40));
-        root.setMaxWidth(850);
-        root.setStyle("-fx-background-color: white;");
+        card.setPadding(new Insets(36, 40, 36, 40));
+        card.setMaxWidth(860);
+        card.getStyleClass().add("surface");
 
-        VBox container = new VBox(root);
+        VBox container = new VBox(card);
         container.setAlignment(Pos.TOP_CENTER);
-        container.setPadding(new Insets(24));
+        container.setPadding(new Insets(32));
         container.setStyle("-fx-background-color: #F5F7FB;");
 
-        stage.setTitle("Interview Coach - Interview");
-        stage.setScene(new Scene(container, 1000, 700));
+        javafx.scene.control.ScrollPane scroll = new javafx.scene.control.ScrollPane(container);
+        scroll.setFitToWidth(true);
+        scroll.setFitToHeight(true);
+        scroll.getStyleClass().add("scroll-pane");
+
+        Scene scene = new Scene(scroll, 1060, 760);
+        scene.getStylesheets().add(
+                java.util.Objects.requireNonNull(
+                        getClass().getResource("/css/app.css")
+                ).toExternalForm()
+        );
+
+        stage.setTitle("Interview Coach - Assessment");
+        stage.setScene(scene);
 
         renderQuestion();
         stage.show();
@@ -148,7 +185,7 @@ public class InterviewView {
         progressLabel.setText(
                 "Question " + (currentIndex + 1) + " of " + questions.size()
         );
-        questionLabel.setText(question.getPromptSnapshot());
+        questionLabel.setText((currentIndex + 1) + ". " + question.getPromptSnapshot());
 
         String[] optionTexts = {
                 question.getOptionASnapshot(),
@@ -162,7 +199,7 @@ public class InterviewView {
         optionGroup.selectToggle(null);
 
         for (int i = 0; i < options.length; i++) {
-            options[i].setText(letters[i] + ". " + optionTexts[i]);
+            options[i].setText("   " + letters[i] + ".  " + optionTexts[i]);
             options[i].setUserData(letters[i]);
             options[i].setSelected(
                     answers.get(question.getQuestionId()) != null

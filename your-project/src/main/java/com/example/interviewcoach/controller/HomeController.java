@@ -4,6 +4,7 @@ import com.example.interviewcoach.model.AuthenticatedUser;
 import com.example.interviewcoach.service.AuthService;
 import com.example.interviewcoach.util.Launcher;
 import com.example.interviewcoach.config.AppConfig;
+import com.example.interviewcoach.repository.ConnectionProvider;
 import com.example.interviewcoach.repository.AttemptRepositoryAnswers;
 import com.example.interviewcoach.repository.AttemptRepository;
 import com.example.interviewcoach.service.PerformanceService;
@@ -71,59 +72,118 @@ public class HomeController {
     }
 
     private void showDashboard() {
-        VBox dashboard = new VBox(22);
-        dashboard.setPadding(new Insets(32));
-        dashboard.setStyle("-fx-background-color: #F5F7FB;");
+        VBox dashboard = new VBox(24);
+        dashboard.setMaxWidth(1020);
+        dashboard.setAlignment(Pos.TOP_LEFT);
+
+        // Header Welcome Banner
+        String name = currentUser == null
+                ? "Student"
+                : currentUser.fullName();
 
         Label heading = new Label("Student Dashboard");
-        heading.setFont(Font.font("System", FontWeight.BOLD, 28));
+        heading.getStyleClass().add("label-title");
 
-        String name = currentUser == null
-                ? "Welcome back!"
-                : "Welcome back, " + currentUser.fullName() + "!";
+        Label welcome = new Label("Welcome back, " + name + "! Ready to prepare for your next interview?");
+        welcome.getStyleClass().add("label-subtitle");
 
-        Label welcome = new Label(name);
-        welcome.setStyle("-fx-text-fill: #64748B; -fx-font-size: 15px;");
+        VBox introduction = new VBox(6, heading, welcome);
+        introduction.getStyleClass().add("surface");
+        introduction.setPadding(new Insets(24, 28, 24, 28));
 
-        VBox introduction = new VBox(8, heading, welcome);
+        // Retrieve real statistics if database is available
+        String completedCount = "0";
+        String questionsCount = "0";
+        String avgScore = "—";
+        String practiceCount = "0";
 
+        ConnectionProvider provider = null;
+        try {
+            provider = AppConfig.getInstance().getConnectionProvider();
+        } catch (Exception ignored) {
+        }
+        if (currentUser != null && provider != null) {
+            try {
+                var attemptRepository = new AttemptRepository(provider);
+                long totalCompleted = attemptRepository.countCompletedByUser(currentUser.id());
+                completedCount = String.valueOf(totalCompleted);
+
+                var recentAttempts = attemptRepository.findCompletedByUser(currentUser.id(), 0, 100);
+                int totalQuestions = 0;
+                double totalScore = 0;
+                int scoredAttempts = 0;
+                int practiceSessions = 0;
+
+                for (var a : recentAttempts) {
+                    totalQuestions += a.getQuestionCount();
+                    if (a.getScorePercent() != null) {
+                        totalScore += a.getScorePercent();
+                        scoredAttempts++;
+                    }
+                    if (a.getAttemptType() != null && "PRACTICE".equalsIgnoreCase(a.getAttemptType().name())) {
+                        practiceSessions++;
+                    }
+                }
+
+                if (totalQuestions > 0) {
+                    questionsCount = String.valueOf(totalQuestions);
+                }
+                if (scoredAttempts > 0) {
+                    avgScore = String.format("%.0f%%", totalScore / scoredAttempts);
+                }
+                if (practiceSessions > 0) {
+                    practiceCount = String.valueOf(practiceSessions);
+                }
+            } catch (Exception e) {
+                // Keep default placeholder values on query failure
+            }
+        }
+
+        // Statistics Grid
         GridPane statistics = new GridPane();
-        statistics.setHgap(16);
-        statistics.setVgap(16);
+        statistics.setHgap(18);
+        statistics.setVgap(18);
+        statistics.setMaxWidth(Double.MAX_VALUE);
 
-        statistics.add(createStatCard("Interviews Completed", "0"),
-                0, 0);
-        statistics.add(createStatCard("Questions Answered", "0"),
-                1, 0);
-        statistics.add(createStatCard("Average Score", "—"),
-                0, 1);
-        statistics.add(createStatCard("Practice Sessions", "0"),
-                1, 1);
+        statistics.add(createStatCard("Interviews Completed", completedCount, "Completed interview sessions", "📊"), 0, 0);
+        statistics.add(createStatCard("Questions Answered", questionsCount, "Total questions across attempts", "📝"), 1, 0);
+        statistics.add(createStatCard("Average Score", avgScore, "Overall performance accuracy", "🎯"), 0, 1);
+        statistics.add(createStatCard("Practice Sessions", practiceCount, "Self-paced practice sessions", "⚡"), 1, 1);
+
+        // Make columns expand equally
+        javafx.scene.layout.ColumnConstraints col1 = new javafx.scene.layout.ColumnConstraints();
+        col1.setPercentWidth(50);
+        javafx.scene.layout.ColumnConstraints col2 = new javafx.scene.layout.ColumnConstraints();
+        col2.setPercentWidth(50);
+        statistics.getColumnConstraints().addAll(col1, col2);
+
+        // Quick Actions Section
+        VBox actionsContainer = new VBox(16);
+        actionsContainer.getStyleClass().add("surface");
+        actionsContainer.setPadding(new Insets(24, 28, 24, 28));
 
         Label actionsHeading = new Label("Quick Actions");
-        actionsHeading.setFont(Font.font("System", FontWeight.BOLD, 20));
+        actionsHeading.getStyleClass().add("label-section");
+
+        Label actionsSub = new Label("Start an interview session or review your previous attempts.");
+        actionsSub.getStyleClass().add("label-helper");
 
         Button practiceButton = new Button("Start an Interview");
-        practiceButton.setMaxWidth(Double.MAX_VALUE);
-        practiceButton.setPrefHeight(48);
-        practiceButton.setStyle(
-                "-fx-background-color: #2458C5;" +
-                "-fx-text-fill: white;" +
-                "-fx-font-size: 15px;" +
-                "-fx-font-weight: bold;"
-        );
+        practiceButton.getStyleClass().add("primary-button");
+        practiceButton.setPrefHeight(46);
+        practiceButton.setPrefWidth(220);
 
         practiceButton.setOnAction(event -> {
-            var provider = AppConfig.getInstance().getConnectionProvider();
+            var dbProvider = AppConfig.getInstance().getConnectionProvider();
 
-            if (provider == null) {
+            if (dbProvider == null) {
                 showMessage("Database Error", "Database connection is unavailable.");
                 return;
             }
 
             try {
-                var questionRepository = new QuestionRepository(provider);
-                var attemptRepository = new AttemptRepository(provider);
+                var questionRepository = new QuestionRepository(dbProvider);
+                var attemptRepository = new AttemptRepository(dbProvider);
 
                 new InterviewSetupView(
                         stage,
@@ -140,13 +200,14 @@ public class HomeController {
         });
 
         Button historyButton = new Button("View Interview History");
-        historyButton.setMaxWidth(Double.MAX_VALUE);
-        historyButton.setPrefHeight(48);
+        historyButton.getStyleClass().add("secondary-button");
+        historyButton.setPrefHeight(46);
+        historyButton.setPrefWidth(220);
 
         historyButton.setOnAction(event -> {
-            var provider = AppConfig.getInstance().getConnectionProvider();
+            var dbProvider = AppConfig.getInstance().getConnectionProvider();
 
-            if (provider == null) {
+            if (dbProvider == null) {
                 showMessage(
                         "Database Error",
                         "Database connection is unavailable."
@@ -155,9 +216,9 @@ public class HomeController {
             }
 
             try {
-                var attemptRepository = new AttemptRepository(provider);
-                var answerRepository = new AttemptRepositoryAnswers(provider);
-                var questionRepository = new QuestionRepository(provider);
+                var attemptRepository = new AttemptRepository(dbProvider);
+                var answerRepository = new AttemptRepositoryAnswers(dbProvider);
+                var questionRepository = new QuestionRepository(dbProvider);
 
                 var performanceService = new PerformanceService(
                         attemptRepository,
@@ -180,39 +241,40 @@ public class HomeController {
             }
         });
 
-        HBox actions = new HBox(14, practiceButton, historyButton);
+        HBox actions = new HBox(16, practiceButton, historyButton);
         actions.setAlignment(Pos.CENTER_LEFT);
+
+        actionsContainer.getChildren().addAll(actionsHeading, actionsSub, actions);
 
         dashboard.getChildren().addAll(
                 introduction,
                 statistics,
-                actionsHeading,
-                actions
+                actionsContainer
         );
 
         showContent(dashboard);
     }
 
-    private VBox createStatCard(String title, String value) {
+    private VBox createStatCard(String title, String value, String helper, String icon) {
+        Label iconLabel = new Label(icon);
+        iconLabel.setStyle("-fx-font-size: 18px;");
+
         Label titleLabel = new Label(title);
-        titleLabel.setStyle(
-                "-fx-text-fill: #64748B; -fx-font-size: 13px;"
-        );
+        titleLabel.setStyle("-fx-text-fill: #64748B; -fx-font-size: 13px; -fx-font-weight: bold;");
+
+        HBox topRow = new HBox(8, iconLabel, titleLabel);
+        topRow.setAlignment(Pos.CENTER_LEFT);
 
         Label valueLabel = new Label(value);
-        valueLabel.setFont(Font.font("System", FontWeight.BOLD, 26));
+        valueLabel.setFont(Font.font("Segoe UI", FontWeight.BOLD, 28));
         valueLabel.setStyle("-fx-text-fill: #142D52;");
 
-        VBox card = new VBox(12, titleLabel, valueLabel);
-        card.setPadding(new Insets(22));
-        card.setPrefSize(300, 115);
+        Label helperLabel = new Label(helper);
+        helperLabel.setStyle("-fx-text-fill: #94A3B8; -fx-font-size: 12px;");
+
+        VBox card = new VBox(10, topRow, valueLabel, helperLabel);
+        card.getStyleClass().add("stat-card");
         card.setMaxWidth(Double.MAX_VALUE);
-        card.setStyle(
-                "-fx-background-color: white;" +
-                "-fx-background-radius: 12;" +
-                "-fx-border-color: #E2E8F0;" +
-                "-fx-border-radius: 12;"
-        );
 
         return card;
     }

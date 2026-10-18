@@ -3,94 +3,129 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.interviewcoach.controller.RegisterController"
-      alignment="CENTER"
-      spacing="14"
+      alignment="TOP_CENTER"
       styleClass="root"
       stylesheets="@../css/app.css"
-      prefWidth="420"
-      prefHeight="560"
+      prefWidth="480"
+      prefHeight="650"
       VBox.vgrow="ALWAYS">
 
-    <padding>
-        <Insets bottom="36" left="36" right="36" top="36"/>
-    </padding>
+    <ScrollPane fitToWidth="true"
+                styleClass="scroll-pane"
+                VBox.vgrow="ALWAYS">
 
-    <Label text="Create account" styleClass="label-title" textAlignment="CENTER"/>
-    <Label text="Register a new student account" styleClass="label-helper" textAlignment="CENTER"/>
+        <VBox alignment="TOP_CENTER"
+              spacing="16"
+              styleClass="surface">
+            <padding>
+                <Insets top="28" right="32" bottom="28" left="32"/>
+            </padding>
 
-    <Separator styleClass="surface" prefWidth="340"/>
+            <!-- Header -->
+            <VBox alignment="CENTER" spacing="4">
+                <Label text="Create Account"
+                       styleClass="label-title"
+                       textAlignment="CENTER"/>
+                <Label text="Register a student account to get started"
+                       styleClass="label-subtitle"
+                       textAlignment="CENTER"/>
+            </VBox>
 
-    <VBox alignment="CENTER" spacing="12" VBox.vgrow="ALWAYS">
-        <padding>
-            <Insets top="22" bottom="8"/>
-        </padding>
+            <Separator prefWidth="380"/>
 
-        <TextField fx:id="nameField"
-                   promptText="Full name"
-                   styleClass="text-field"
-                   prefWidth="340"
-                   onAction="#handleCreateAccount"/>
+            <!-- Form Fields -->
+            <VBox spacing="10" alignment="CENTER_LEFT" maxWidth="Infinity">
+                <!-- Full Name -->
+                <VBox spacing="4">
+                    <Label text="Full name" styleClass="label-field"/>
+                    <TextField fx:id="nameField"
+                               promptText="Ada Lovelace"
+                               styleClass="text-field"
+                               maxWidth="Infinity"
+                               prefHeight="38"
+                               onAction="#handleCreateAccount"/>
+                    <Label fx:id="nameValidation"
+                           styleClass="label-validation"
+                           minHeight="14"/>
+                </VBox>
 
-        <TextField fx:id="emailField"
-                   promptText="Email address"
-                   styleClass="text-field"
-                   prefWidth="340"
-                   onAction="#handleCreateAccount"/>
+                <!-- Email Address -->
+                <VBox spacing="4">
+                    <Label text="Email address" styleClass="label-field"/>
+                    <TextField fx:id="emailField"
+                               promptText="ada@example.com"
+                               styleClass="text-field"
+                               maxWidth="Infinity"
+                               prefHeight="38"
+                               onAction="#handleCreateAccount"/>
+                    <Label fx:id="emailValidation"
+                           styleClass="label-validation"
+                           minHeight="14"/>
+                </VBox>
 
-        <Label fx:id="nameValidation"
-               styleClass="label-validation"
-               textAlignment="CENTER"
-               prefWidth="340"/>
+                <!-- Password -->
+                <VBox spacing="4">
+                    <Label text="Password (minimum 10 characters)" styleClass="label-field"/>
+                    <PasswordField fx:id="passwordField"
+                                   promptText="Choose a strong password"
+                                   styleClass="password-field"
+                                   maxWidth="Infinity"
+                                   prefHeight="38"
+                                   onAction="#handleCreateAccount"/>
+                </VBox>
 
-        <Label fx:id="emailValidation"
-               styleClass="label-validation"
-               textAlignment="CENTER"
-               prefWidth="340"/>
+                <!-- Confirm Password -->
+                <VBox spacing="4">
+                    <Label text="Confirm password" styleClass="label-field"/>
+                    <PasswordField fx:id="confirmField"
+                                   promptText="Re-enter your password"
+                                   styleClass="password-field"
+                                   maxWidth="Infinity"
+                                   prefHeight="38"
+                                   onAction="#handleCreateAccount"/>
+                    <Label fx:id="passwordValidation"
+                           styleClass="label-validation"
+                           minHeight="14"/>
+                </VBox>
 
-        <PasswordField fx:id="passwordField"
-                       promptText="Password"
-                       styleClass="text-field"
-                       prefWidth="340"
-                       onAction="#handleCreateAccount"/>
+                <!-- Feedback Labels -->
+                <Label fx:id="errorLabel"
+                       styleClass="label-validation"
+                       alignment="CENTER"
+                       textAlignment="CENTER"
+                       maxWidth="Infinity"
+                       minHeight="14"/>
 
-        <PasswordField fx:id="confirmField"
-                       promptText="Confirm password"
-                       styleClass="text-field"
-                       prefWidth="340"
-                       onAction="#handleCreateAccount"/>
+                <Label fx:id="successLabel"
+                       styleClass="label-success"
+                       alignment="CENTER"
+                       textAlignment="CENTER"
+                       maxWidth="Infinity"
+                       minHeight="14"/>
 
-        <Label fx:id="passwordValidation"
-               styleClass="label-validation"
-               textAlignment="CENTER"
-               prefWidth="340"/>
-
-        <Label fx:id="errorLabel"
-               styleClass="label-validation"
-               textAlignment="CENTER"
-               prefWidth="340"/>
-
-        <Label fx:id="successLabel"
-               styleClass="label-body"
-               textAlignment="CENTER"
-               prefWidth="340"
-               style="-fx-text-fill: #1E7F4F;"/>
-
-        <HBox alignment="CENTER" spacing="12">
-            <Button fx:id="createButton"
-                    text="Create account"
-                    styleClass="primary-button"
-                    prefWidth="150"
-                    onAction="#handleCreateAccount"/>
-            <Button fx:id="backButton"
-                    text="Back to sign in"
-                    styleClass="secondary-button"
-                    prefWidth="150"
-                    onAction="#handleBack"/>
-        </HBox>
-    </VBox>
+                <!-- Action Buttons -->
+                <VBox spacing="10" maxWidth="Infinity">
+                    <padding>
+                        <Insets top="6"/>
+                    </padding>
+                    <Button fx:id="createButton"
+                            text="Create account"
+                            styleClass="primary-button"
+                            maxWidth="Infinity"
+                            prefHeight="42"
+                            onAction="#handleCreateAccount"/>
+                    <Button fx:id="backButton"
+                            text="Back to sign in"
+                            styleClass="secondary-button"
+                            maxWidth="Infinity"
+                            prefHeight="38"
+                            onAction="#handleBack"/>
+                </VBox>
+            </VBox>
+        </VBox>
+    </ScrollPane>
 </VBox>

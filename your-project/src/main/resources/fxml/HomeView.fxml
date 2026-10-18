@@ -3,36 +3,78 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.interviewcoach.controller.HomeController"
             styleClass="root"
             stylesheets="@../css/app.css"
-            minWidth="900"
-            minHeight="600"
+            minWidth="960"
+            minHeight="640"
             prefWidth="1280"
-            prefHeight="800">
+            prefHeight="820">
 
+    <!-- Top Navigation Bar -->
     <top>
-        <HBox spacing="14" alignment="CENTER_LEFT" styleClass="surface">
+        <HBox spacing="16"
+              alignment="CENTER_LEFT"
+              style="-fx-background-color: #FFFFFF; -fx-border-color: #E2E8F0; -fx-border-width: 0 0 1px 0;">
             <padding>
-                <Insets left="22" right="22" top="14" bottom="14"/>
+                <Insets top="14" right="32" bottom="14" left="32"/>
             </padding>
-            <Label fx:id="appTitle" text="Interview Coach" styleClass="label-title"/>
-            <Separator HBox.hgrow="ALWAYS"/>
-            <Label fx:id="userLabel" styleClass="label-helper"/>
-            <Button fx:id="logoutButton"
-                    text="Sign out"
-                    styleClass="secondary-button"
-                    prefWidth="110"
-                    onAction="#handleLogout"/>
+
+            <!-- Brand Section -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <StackPane maxWidth="36" maxHeight="36" prefWidth="36" prefHeight="36"
+                           style="-fx-background-color: #2458C5; -fx-background-radius: 8px;">
+                    <Label text="IC"
+                           style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: white; -fx-font-family: 'Segoe UI';"/>
+                </StackPane>
+                <Label fx:id="appTitle"
+                       text="Interview Coach"
+                       style="-fx-font-size: 19px; -fx-font-weight: bold; -fx-text-fill: #142D52;"/>
+                <Label text="STUDENT"
+                       styleClass="brand-tag"/>
+            </HBox>
+
+            <!-- Spacer -->
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- User Info & Sign Out -->
+            <HBox spacing="14" alignment="CENTER_RIGHT">
+                <HBox spacing="10" alignment="CENTER"
+                      style="-fx-background-color: #F8FAFC; -fx-background-radius: 20px; -fx-border-color: #E2E8F0; -fx-border-radius: 20px; -fx-padding: 4px 14px 4px 6px;">
+                    <StackPane prefWidth="28" prefHeight="28"
+                               style="-fx-background-color: #EBF1FC; -fx-background-radius: 14px;">
+                        <Label text="👤" style="-fx-font-size: 12px;"/>
+                    </StackPane>
+                    <Label fx:id="userLabel"
+                           style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #172B4D;"/>
+                </HBox>
+
+                <Button fx:id="logoutButton"
+                        text="Sign out"
+                        styleClass="secondary-button"
+                        prefWidth="105"
+                        prefHeight="36"
+                        onAction="#handleLogout"/>
+            </HBox>
         </HBox>
     </top>
 
+    <!-- Main Content Area -->
     <center>
-        <Pane fx:id="contentPane" styleClass="root"/>
+        <ScrollPane fitToWidth="true"
+                    fitToHeight="true"
+                    styleClass="scroll-pane">
+            <StackPane fx:id="contentPane"
+                       style="-fx-background-color: #F5F7FB;"
+                       alignment="TOP_CENTER">
+                <padding>
+                    <Insets top="28" right="36" bottom="36" left="36"/>
+                </padding>
+            </StackPane>
+        </ScrollPane>
     </center>
 
 </BorderPane>

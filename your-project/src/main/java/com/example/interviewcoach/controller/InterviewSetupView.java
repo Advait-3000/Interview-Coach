@@ -81,20 +81,56 @@ public class InterviewSetupView {
         questionCount.setEditable(true);
         questionCount.setMaxWidth(Double.MAX_VALUE);
 
-        Label title = new Label("Start an Interview");
-        title.setFont(Font.font("System", FontWeight.BOLD, 28));
+        Label tag = new Label("SESSION SETUP");
+        tag.getStyleClass().add("brand-tag");
+
+        Label title = new Label("Configure Your Interview");
+        title.getStyleClass().add("label-title");
 
         Label subtitle = new Label(
-                "Choose your category, difficulty, and question count."
+                "Choose your preferred category, difficulty level, and question count."
         );
+        subtitle.getStyleClass().add("label-subtitle");
         subtitle.setWrapText(true);
 
-        Button startButton = new Button("Start Interview");
+        VBox headerBox = new VBox(8, tag, title, subtitle);
+
+        // Category field group
+        Label categoryLabel = new Label("Question Category");
+        categoryLabel.getStyleClass().add("label-field");
+        Label categoryHint = new Label("Select the subject area you want to practice.");
+        categoryHint.getStyleClass().add("label-helper-small");
+        categoryBox.getStyleClass().add("combo-box");
+        categoryBox.setPrefHeight(42);
+        VBox categoryGroup = new VBox(6, categoryLabel, categoryHint, categoryBox);
+
+        // Difficulty field group
+        Label difficultyLabel = new Label("Difficulty Level");
+        difficultyLabel.getStyleClass().add("label-field");
+        Label difficultyHint = new Label("Select the target challenge level.");
+        difficultyHint.getStyleClass().add("label-helper-small");
+        difficultyBox.getStyleClass().add("combo-box");
+        difficultyBox.setPrefHeight(42);
+        VBox difficultyGroup = new VBox(6, difficultyLabel, difficultyHint, difficultyBox);
+
+        // Question count field group
+        Label countLabel = new Label("Number of Questions");
+        countLabel.getStyleClass().add("label-field");
+        Label countHint = new Label("Choose between 1 and 50 questions.");
+        countHint.getStyleClass().add("label-helper-small");
+        questionCount.getStyleClass().add("spinner");
+        questionCount.setPrefHeight(42);
+        VBox countGroup = new VBox(6, countLabel, countHint, questionCount);
+
+        Button startButton = new Button("Start Interview Session");
+        startButton.getStyleClass().add("primary-button");
         startButton.setMaxWidth(Double.MAX_VALUE);
-        startButton.setPrefHeight(44);
+        startButton.setPrefHeight(46);
 
         Button backButton = new Button("Back to Dashboard");
+        backButton.getStyleClass().add("secondary-button");
         backButton.setMaxWidth(Double.MAX_VALUE);
+        backButton.setPrefHeight(40);
 
         startButton.setOnAction(event -> {
             Category category = categoryBox.getValue();
@@ -142,7 +178,6 @@ public class InterviewSetupView {
                         questions.size()
                 );
 
-                
                 var snapshots = questionRepository.snapshotAttemptQuestions(
                         attempt.getId(), questions
                 );
@@ -154,7 +189,6 @@ public class InterviewSetupView {
                         attempt,
                         snapshots
                 ).show();
-
 
             } catch (Exception ex) {
                 showError("Could not start interview: " + ex.getMessage());
@@ -168,31 +202,45 @@ public class InterviewSetupView {
                         )
         );
 
-        VBox root = new VBox(
-                16,
-                title,
-                subtitle,
-                new Label("Category"),
-                categoryBox,
-                new Label("Difficulty"),
-                difficultyBox,
-                new Label("Number of questions"),
-                questionCount,
-                startButton,
-                backButton
+        javafx.scene.control.Separator separator = new javafx.scene.control.Separator();
+
+        VBox buttonBox = new VBox(10, startButton, backButton);
+        buttonBox.setPadding(new Insets(12, 0, 0, 0));
+
+        VBox formCard = new VBox(
+                18,
+                headerBox,
+                separator,
+                categoryGroup,
+                difficultyGroup,
+                countGroup,
+                buttonBox
         );
 
-        root.setAlignment(Pos.CENTER_LEFT);
-        root.setPadding(new Insets(36));
-        root.setMaxWidth(560);
-        root.setStyle("-fx-background-color: #F5F7FB;");
+        formCard.setAlignment(Pos.TOP_LEFT);
+        formCard.setPadding(new Insets(36, 40, 36, 40));
+        formCard.setMaxWidth(560);
+        formCard.getStyleClass().add("surface");
 
-        VBox container = new VBox(root);
-        container.setAlignment(Pos.CENTER);
-        container.setPadding(new Insets(24));
+        VBox outerWrapper = new VBox(formCard);
+        outerWrapper.setAlignment(Pos.CENTER);
+        outerWrapper.setPadding(new Insets(36));
+        outerWrapper.setStyle("-fx-background-color: #F5F7FB;");
 
-        stage.setTitle("Interview Coach - Interview Setup");
-        stage.setScene(new Scene(container, 1000, 700));
+        javafx.scene.control.ScrollPane scroll = new javafx.scene.control.ScrollPane(outerWrapper);
+        scroll.setFitToWidth(true);
+        scroll.setFitToHeight(true);
+        scroll.getStyleClass().add("scroll-pane");
+
+        Scene scene = new Scene(scroll, 1060, 740);
+        scene.getStylesheets().add(
+                java.util.Objects.requireNonNull(
+                        getClass().getResource("/css/app.css")
+                ).toExternalForm()
+        );
+
+        stage.setTitle("Interview Coach - Configure Interview");
+        stage.setScene(scene);
         stage.show();
     }
 

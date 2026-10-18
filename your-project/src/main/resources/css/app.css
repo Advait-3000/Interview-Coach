@@ -1,195 +1,633 @@
+/* ==========================================================================
+   Interview Coach - Design System Stylesheet
+   Modern SaaS Desktop Aesthetic
+   Primary: #2458C5 | Navy: #142D52 | Background: #F5F7FB | Surface: #FFFFFF
+   ========================================================================== */
+
+/* --- Root & Global Variables --- */
 .root {
-    -fx-background-color: #F6F8FB;
-    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -fx-background-color: #F5F7FB;
+    -fx-font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Roboto", "Helvetica Neue", Arial, sans-serif;
     -fx-font-size: 14px;
-    -fx-text-fill: #1E293B;
+    -fx-text-fill: #172B4D;
 }
 
+/* --- Surfaces & Cards --- */
 .surface {
     -fx-background-color: #FFFFFF;
-    -fx-background-radius: 8px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.04), 8, 0, 0, 2);
+    -fx-background-radius: 12px;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(20, 45, 82, 0.04), 10, 0, 0, 2);
 }
 
+.card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12px;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(20, 45, 82, 0.05), 8, 0, 0, 2);
+}
+
+.card-interactive {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12px;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+    -fx-padding: 20px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(20, 45, 82, 0.04), 8, 0, 0, 2);
+}
+
+.card-interactive:hover {
+    -fx-border-color: #2458C5;
+    -fx-background-color: #FCFDFF;
+    -fx-effect: dropshadow(gaussian, rgba(36, 88, 197, 0.12), 12, 0, 0, 4);
+}
+
+.stat-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12px;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+    -fx-padding: 20px 24px;
+    -fx-effect: dropshadow(gaussian, rgba(20, 45, 82, 0.04), 8, 0, 0, 2);
+}
+
+.stat-card:hover {
+    -fx-border-color: #CBD5E1;
+    -fx-effect: dropshadow(gaussian, rgba(20, 45, 82, 0.08), 12, 0, 0, 3);
+}
+
+/* --- Typography --- */
 .label-title {
     -fx-font-size: 26px;
     -fx-font-weight: bold;
-    -fx-text-fill: #1E293B;
+    -fx-text-fill: #142D52;
+}
+
+.label-subtitle {
+    -fx-font-size: 15px;
+    -fx-text-fill: #64748B;
 }
 
 .label-section {
-    -fx-font-size: 17px;
+    -fx-font-size: 18px;
     -fx-font-weight: bold;
-    -fx-text-fill: #1E293B;
+    -fx-text-fill: #142D52;
+}
+
+.label-field {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #172B4D;
 }
 
 .label-body {
     -fx-font-size: 14px;
-    -fx-text-fill: #1E293B;
+    -fx-text-fill: #172B4D;
 }
 
 .label-helper {
+    -fx-font-size: 13px;
+    -fx-text-fill: #64748B;
+}
+
+.label-helper-small {
     -fx-font-size: 12px;
     -fx-text-fill: #64748B;
 }
 
-.primary-button {
-    -fx-background-color: #2457C5;
-    -fx-text-fill: #FFFFFF;
-    -fx-font-size: 14px;
+.label-validation {
+    -fx-font-size: 12px;
+    -fx-text-fill: #DC2626;
+}
+
+.label-success {
+    -fx-font-size: 13px;
+    -fx-text-fill: #16A34A;
     -fx-font-weight: bold;
-    -fx-padding: 10px 18px;
-    -fx-background-radius: 6px;
+}
+
+/* --- Brand Elements --- */
+.brand-badge {
+    -fx-background-color: #2458C5;
+    -fx-background-radius: 10px;
+    -fx-padding: 8px 12px;
+}
+
+.brand-badge-text {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.brand-tag {
+    -fx-background-color: #EBF1FC;
+    -fx-text-fill: #2458C5;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 2px 6px;
+    -fx-background-radius: 4px;
+}
+
+/* --- Buttons --- */
+.button {
+    -fx-font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Roboto", sans-serif;
     -fx-cursor: hand;
 }
 
+.primary-button {
+    -fx-background-color: #2458C5;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-background-radius: 8px;
+    -fx-border-width: 0;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(36, 88, 197, 0.20), 6, 0, 0, 2);
+}
+
 .primary-button:hover {
-    -fx-background-color: #19449F;
+    -fx-background-color: #1D469E;
+    -fx-effect: dropshadow(gaussian, rgba(36, 88, 197, 0.32), 8, 0, 0, 3);
 }
 
 .primary-button:pressed {
-    -fx-background-color: #153684;
+    -fx-background-color: #16377E;
+    -fx-effect: none;
+}
+
+.primary-button:disabled {
+    -fx-background-color: #E2E8F0;
+    -fx-text-fill: #94A3B8;
+    -fx-cursor: default;
+    -fx-effect: none;
 }
 
 .secondary-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: #2457C5;
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #2458C5;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-border-color: #2457C5;
-    -fx-border-width: 1px;
-    -fx-border-radius: 6px;
+    -fx-border-color: #CBD5E1;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
     -fx-padding: 9px 18px;
     -fx-cursor: hand;
 }
 
 .secondary-button:hover {
-    -fx-background-color: rgba(36, 87, 197, 0.08);
+    -fx-background-color: #F8FAFD;
+    -fx-border-color: #2458C5;
+    -fx-text-fill: #1D469E;
 }
 
-.text-field {
-    -fx-background-color: #FFFFFF;
-    -fx-border-color: #DCE3ED;
-    -fx-border-width: 1px;
-    -fx-border-radius: 6px;
-    -fx-padding: 9px 12px;
-    -fx-font-size: 14px;
+.secondary-button:pressed {
+    -fx-background-color: #EBF1FC;
+    -fx-border-color: #1D469E;
 }
 
-.text-field:focused {
-    -fx-border-color: #2457C5;
-    -fx-effect: dropshadow(gaussian, rgba(36, 87, 197, 0.18), 6, 0, 0, 2);
+.secondary-button:disabled {
+    -fx-background-color: #F8FAFC;
+    -fx-border-color: #E2E8F0;
+    -fx-text-fill: #94A3B8;
+    -fx-cursor: default;
 }
 
-.text-field.error {
-    -fx-border-color: #C0392B;
-}
-
-.label-validation {
-    -fx-text-fill: #C0392B;
-    -fx-font-size: 12px;
-}
-
-.card {
-    -fx-background-color: #FFFFFF;
-    -fx-background-radius: 10px;
-    -fx-border-color: #DCE3ED;
-    -fx-border-width: 1px;
-    -fx-padding: 16px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 6, 0, 0, 2);
-}
-
-.badge {
-    -fx-background-color: #EAF0FB;
-    -fx-text-fill: #2457C5;
-    -fx-font-size: 12px;
+.ghost-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #64748B;
+    -fx-font-size: 13px;
     -fx-font-weight: bold;
-    -fx-padding: 4px 10px;
-    -fx-background-radius: 20px;
+    -fx-padding: 8px 14px;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
 }
 
-.badge-success {
-    -fx-background-color: #D7F3E3;
-    -fx-text-fill: #1E7F4F;
+.ghost-button:hover {
+    -fx-background-color: #E2E8F0;
+    -fx-text-fill: #172B4D;
 }
 
-.badge-warning {
-    -fx-background-color: #FCE9CF;
-    -fx-text-fill: #9A6600;
+.success-button {
+    -fx-background-color: #16A34A;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 22px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(22, 163, 74, 0.20), 6, 0, 0, 2);
 }
 
-.badge-error {
-    -fx-background-color: #F7D7D5;
-    -fx-text-fill: #B03A2E;
+.success-button:hover {
+    -fx-background-color: #15803D;
+    -fx-effect: dropshadow(gaussian, rgba(22, 163, 74, 0.32), 8, 0, 0, 3);
 }
 
-.option-node {
+.success-button:pressed {
+    -fx-background-color: #166534;
+}
+
+/* --- Input Fields --- */
+.text-field, .password-field {
     -fx-background-color: #FFFFFF;
-    -fx-border-color: #DCE3ED;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 14px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #172B4D;
+    -fx-prompt-text-fill: #94A3B8;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #2458C5;
+    -fx-background-color: #FFFFFF;
+    -fx-effect: dropshadow(gaussian, rgba(36, 88, 197, 0.16), 6, 0, 0, 0);
+}
+
+.text-field.error, .password-field.error {
+    -fx-border-color: #DC2626;
+    -fx-effect: dropshadow(gaussian, rgba(220, 38, 38, 0.12), 6, 0, 0, 0);
+}
+
+/* --- ComboBox --- */
+.combo-box {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 4px 10px;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+.combo-box:hover {
+    -fx-border-color: #CBD5E1;
+}
+
+.combo-box:focused {
+    -fx-border-color: #2458C5;
+    -fx-effect: dropshadow(gaussian, rgba(36, 88, 197, 0.16), 6, 0, 0, 0);
+}
+
+.combo-box .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #172B4D;
+    -fx-padding: 6px 4px;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E2E8F0;
     -fx-border-width: 1px;
     -fx-border-radius: 8px;
-    -fx-padding: 12px 14px;
+    -fx-background-radius: 8px;
+    -fx-padding: 4px;
+    -fx-effect: dropshadow(gaussian, rgba(20, 45, 82, 0.12), 12, 0, 0, 4);
+}
+
+.combo-box-popup .list-cell {
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #172B4D;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 6px;
+}
+
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: #F0F5FD;
+    -fx-text-fill: #2458C5;
+}
+
+.combo-box-popup .list-cell:filled:selected {
+    -fx-background-color: #EBF1FC;
+    -fx-text-fill: #2458C5;
+    -fx-font-weight: bold;
+}
+
+/* --- Spinner --- */
+.spinner {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+.spinner:focused {
+    -fx-border-color: #2458C5;
+    -fx-effect: dropshadow(gaussian, rgba(36, 88, 197, 0.16), 6, 0, 0, 0);
+}
+
+.spinner .text-field {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 8px 12px;
+}
+
+.spinner .increment-arrow-button, .spinner .decrement-arrow-button {
+    -fx-background-color: #F8FAFC;
+    -fx-border-color: #E2E8F0;
     -fx-cursor: hand;
+}
+
+.spinner .increment-arrow-button:hover, .spinner .decrement-arrow-button:hover {
+    -fx-background-color: #EBF1FC;
+}
+
+/* --- Radio Button & Quiz Options --- */
+.radio-button {
     -fx-font-size: 14px;
-    -fx-text-fill: #1E293B;
+    -fx-text-fill: #172B4D;
+    -fx-cursor: hand;
 }
 
-.option-node:hover {
-    -fx-border-color: #2457C5;
-    -fx-background-color: #F3F7FD;
+.quiz-option {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 14px 18px;
+    -fx-cursor: hand;
 }
 
-.option-node.selected {
-    -fx-border-color: #2457C5;
-    -fx-background-color: #E8F0FE;
+.quiz-option:hover {
+    -fx-background-color: #F8FAFD;
+    -fx-border-color: #2458C5;
 }
 
-.option-node.correct {
-    -fx-border-color: #1E7F4F;
-    -fx-background-color: #D7F3E3;
+.quiz-option:selected {
+    -fx-background-color: #EBF1FC;
+    -fx-border-color: #2458C5;
+    -fx-effect: dropshadow(gaussian, rgba(36, 88, 197, 0.12), 6, 0, 0, 1);
 }
 
-.option-node.incorrect {
-    -fx-border-color: #C0392B;
-    -fx-background-color: #F7D7D5;
-}
-
-.option-node.show-correct {
-    -fx-border-color: #1E7F4F;
-    -fx-background-color: #D7F3E3;
-}
-
-.progress-bar {
-    -fx-background-color: #E4E9F2;
-    -fx-background-radius: 4px;
+.quiz-option .radio {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #CBD5E1;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 10px;
     -fx-padding: 4px;
 }
 
-.progress-fill {
-    -fx-background-color: #2457C5;
-    -fx-background-radius: 4px;
-}
-
-.table-row {
+.quiz-option:selected .radio {
+    -fx-border-color: #2458C5;
     -fx-background-color: #FFFFFF;
 }
 
-.table-row:hover {
-    -fx-background-color: #F3F7FD;
+.quiz-option:selected .radio .dot {
+    -fx-background-color: #2458C5;
+    -fx-background-radius: 10px;
 }
 
-.table-column-header {
-    -fx-background-color: #F6F8FB;
+/* Legacy option-node class compatibility */
+.option-node {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 10px;
+    -fx-padding: 14px 18px;
+    -fx-cursor: hand;
+    -fx-font-size: 14px;
+    -fx-text-fill: #172B4D;
+}
+
+.option-node:hover {
+    -fx-border-color: #2458C5;
+    -fx-background-color: #F8FAFD;
+}
+
+.option-node.selected {
+    -fx-border-color: #2458C5;
+    -fx-background-color: #EBF1FC;
+}
+
+.option-node.correct, .option-node.show-correct {
+    -fx-border-color: #16A34A;
+    -fx-background-color: #ECFDF5;
+}
+
+.option-node.incorrect {
+    -fx-border-color: #DC2626;
+    -fx-background-color: #FEF2F2;
+}
+
+/* --- Badges & Chips --- */
+.badge {
+    -fx-background-color: #EBF1FC;
+    -fx-text-fill: #2458C5;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 4px 12px;
+    -fx-background-radius: 16px;
+}
+
+.badge-primary {
+    -fx-background-color: #EBF1FC;
+    -fx-text-fill: #2458C5;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 4px 12px;
+    -fx-background-radius: 16px;
+}
+
+.badge-success {
+    -fx-background-color: #ECFDF5;
+    -fx-text-fill: #16A34A;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 4px 12px;
+    -fx-background-radius: 16px;
+}
+
+.badge-warning {
+    -fx-background-color: #FFFBEB;
+    -fx-text-fill: #D97706;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 4px 12px;
+    -fx-background-radius: 16px;
+}
+
+.badge-error {
+    -fx-background-color: #FEF2F2;
+    -fx-text-fill: #DC2626;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 4px 12px;
+    -fx-background-radius: 16px;
+}
+
+.badge-neutral {
+    -fx-background-color: #F1F5F9;
     -fx-text-fill: #64748B;
     -fx-font-size: 12px;
     -fx-font-weight: bold;
-    -fx-padding: 6px 10px;
+    -fx-padding: 4px 12px;
+    -fx-background-radius: 16px;
 }
 
+/* --- TableView --- */
+.table-view {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(20, 45, 82, 0.03), 8, 0, 0, 2);
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #F8FAFC;
+    -fx-background-radius: 10px 10px 0 0;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 0 0 1.5px 0;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-padding: 10px 12px;
+    -fx-border-width: 0;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #64748B;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.table-row-cell {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #F1F5F9;
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 3px 0;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #FAFBFD;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #F0F5FD;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #EBF1FC;
+    -fx-text-fill: #172B4D;
+}
+
+.table-cell {
+    -fx-padding: 8px 12px;
+    -fx-text-fill: #172B4D;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* --- Progress Bar --- */
+.progress-bar {
+    -fx-background-color: #E2E8F0;
+    -fx-background-radius: 6px;
+    -fx-padding: 2px;
+}
+
+.progress-bar .bar {
+    -fx-background-color: #2458C5;
+    -fx-background-radius: 4px;
+}
+
+/* --- ScrollPane & ScrollBar --- */
 .scroll-pane {
     -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-width: 0;
 }
 
-.scroll-pane.viewport {
+.scroll-pane > .viewport {
     -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical, .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+    -fx-pref-width: 10px;
+    -fx-pref-height: 10px;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #CBD5E1;
+    -fx-background-radius: 6px;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #94A3B8;
+}
+
+.scroll-bar .track {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .increment-button, .scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+/* --- Dialog Pane --- */
+.dialog-pane {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 16px;
+    -fx-effect: dropshadow(gaussian, rgba(20, 45, 82, 0.12), 16, 0, 0, 4);
+}
+
+.dialog-pane > .header-panel {
+    -fx-background-color: #F8FAFC;
+    -fx-padding: 14px 18px;
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.dialog-pane > .header-panel .label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #142D52;
+}
+
+.dialog-pane > .content {
+    -fx-padding: 18px;
+    -fx-text-fill: #172B4D;
+    -fx-font-size: 14px;
+}
+
+.dialog-pane .button-bar .button {
+    -fx-background-color: #2458C5;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 18px;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+}
+
+.dialog-pane .button-bar .button:hover {
+    -fx-background-color: #1D469E;
+}
+
+/* --- Separator --- */
+.separator .line {
+    -fx-border-color: #E2E8F0;
+    -fx-border-width: 0.5px;
 }

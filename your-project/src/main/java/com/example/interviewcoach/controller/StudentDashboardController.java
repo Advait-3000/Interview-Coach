@@ -77,38 +77,47 @@ public class StudentDashboardController {
 
         actionCards.getChildren().addAll(
                 makeActionCard("Practice", "Practice questions by topic and difficulty",
-                        "Practice.png", () -> handlePractice()),
+                        "⚡", () -> handlePractice()),
                 makeActionCard("Mock test", "Timed-style mock assessment",
-                        "MockTest.png", () -> handleMockTest()),
+                        "⏱", () -> handleMockTest()),
                 makeActionCard("History", "Review past attempts and answers",
-                        "History.png", () -> handleHistory()),
+                        "📜", () -> handleHistory()),
                 makeActionCard("Performance", "See topic-wise strengths and weak areas",
-                        "Performance.png", () -> handlePerformance())
+                        "📈", () -> handlePerformance())
         );
     }
 
-    private Button makeActionCard(String title, String description,
-                                    String iconName, Runnable action) {
-        VBox card = new VBox(8);
+    private javafx.scene.Node makeActionCard(String title, String description,
+                                             String icon, Runnable action) {
+        VBox card = new VBox(10);
         card.setAlignment(javafx.geometry.Pos.CENTER);
-        card.setPrefSize(170, 150);
+        card.setPrefSize(185, 175);
         card.getStyleClass().add("card");
+        card.setStyle("-fx-alignment: center; -fx-cursor: hand;");
+
+        Label iconLabel = new Label(icon);
+        iconLabel.setStyle("-fx-font-size: 24px;");
 
         Label textTitle = new Label(title);
         textTitle.getStyleClass().add("label-section");
+        textTitle.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;");
 
         Label textDesc = new Label(description);
-        textDesc.getStyleClass().add("label-helper");
+        textDesc.getStyleClass().add("label-helper-small");
         textDesc.setWrapText(true);
-        textDesc.setMaxWidth(150);
+        textDesc.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
+        textDesc.setMaxWidth(160);
 
         Button actionButton = new Button("Open");
-        actionButton.getStyleClass().add("primary-button");
-        actionButton.setPrefWidth(96);
+        actionButton.getStyleClass().add("secondary-button");
+        actionButton.setPrefWidth(100);
+        actionButton.setPrefHeight(32);
         actionButton.setOnAction(ev -> action.run());
 
-        card.getChildren().addAll(textTitle, textDesc, actionButton);
-        return actionButton;
+        card.setOnMouseClicked(ev -> action.run());
+
+        card.getChildren().addAll(iconLabel, textTitle, textDesc, actionButton);
+        return card;
     }
 
     private void rebuildRecentSection() {

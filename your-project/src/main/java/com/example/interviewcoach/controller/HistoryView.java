@@ -33,28 +33,52 @@ public class HistoryView {
             PerformanceService performanceService,
             HomeController homeController
     ) {
+        Label tag = new Label("ACTIVITY LOG");
+        tag.getStyleClass().add("brand-tag");
+
         Label title = new Label("Interview History");
-        title.setFont(Font.font("System", FontWeight.BOLD, 28));
+        title.getStyleClass().add("label-title");
 
         Label subtitle = new Label(
-                "Review your previously completed interviews."
+                "Review your previously completed interview sessions and performance scores."
         );
+        subtitle.getStyleClass().add("label-subtitle");
 
         TableView<Attempt> table = new TableView<>();
+        table.getStyleClass().add("table-view");
 
         TableColumn<Attempt, Long> idColumn =
-                new TableColumn<>("Attempt ID");
+                new TableColumn<>("ID");
         idColumn.setCellValueFactory(
                 new PropertyValueFactory<>("id")
         );
+        idColumn.setPrefWidth(60);
 
         TableColumn<Attempt, String> typeColumn =
                 new TableColumn<>("Type");
         typeColumn.setCellValueFactory(cell ->
                 new javafx.beans.property.SimpleStringProperty(
-                        cell.getValue().getAttemptType().name()
+                        cell.getValue().getAttemptType() != null
+                                ? cell.getValue().getAttemptType().name()
+                                : "PRACTICE"
                 )
         );
+        typeColumn.setCellFactory(col -> new javafx.scene.control.TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                    setText(null);
+                } else {
+                    Label badge = new Label(item);
+                    badge.getStyleClass().add("badge-neutral");
+                    setGraphic(badge);
+                    setText(null);
+                }
+            }
+        });
+        typeColumn.setPrefWidth(120);
 
         TableColumn<Attempt, String> difficultyColumn =
                 new TableColumn<>("Difficulty");
@@ -65,6 +89,28 @@ public class HistoryView {
                                 : cell.getValue().getDifficulty().name()
                 )
         );
+        difficultyColumn.setCellFactory(col -> new javafx.scene.control.TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null || "—".equals(item)) {
+                    setGraphic(null);
+                    setText(empty ? null : "—");
+                } else {
+                    Label badge = new Label(item);
+                    if ("EASY".equalsIgnoreCase(item)) {
+                        badge.getStyleClass().add("badge-success");
+                    } else if ("MEDIUM".equalsIgnoreCase(item)) {
+                        badge.getStyleClass().add("badge-warning");
+                    } else {
+                        badge.getStyleClass().add("badge-error");
+                    }
+                    setGraphic(badge);
+                    setText(null);
+                }
+            }
+        });
+        difficultyColumn.setPrefWidth(110);
 
         TableColumn<Attempt, String> dateColumn =
                 new TableColumn<>("Completed On");
@@ -79,18 +125,21 @@ public class HistoryView {
                     );
             return new javafx.beans.property.SimpleStringProperty(text);
         });
+        dateColumn.setPrefWidth(180);
 
         TableColumn<Attempt, Integer> totalColumn =
                 new TableColumn<>("Questions");
         totalColumn.setCellValueFactory(
                 new PropertyValueFactory<>("questionCount")
         );
+        totalColumn.setPrefWidth(100);
 
         TableColumn<Attempt, Integer> correctColumn =
                 new TableColumn<>("Correct");
         correctColumn.setCellValueFactory(
                 new PropertyValueFactory<>("correctCount")
         );
+        correctColumn.setPrefWidth(100);
 
         TableColumn<Attempt, String> scoreColumn =
                 new TableColumn<>("Score");
@@ -102,6 +151,33 @@ public class HistoryView {
                             : String.format("%.1f%%", score)
             );
         });
+        scoreColumn.setCellFactory(col -> new javafx.scene.control.TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null || "—".equals(item)) {
+                    setGraphic(null);
+                    setText(empty ? null : "—");
+                } else {
+                    Label badge = new Label(item);
+                    try {
+                        double val = Double.parseDouble(item.replace("%", "").trim());
+                        if (val >= 70.0) {
+                            badge.getStyleClass().add("badge-success");
+                        } else if (val >= 50.0) {
+                            badge.getStyleClass().add("badge-warning");
+                        } else {
+                            badge.getStyleClass().add("badge-error");
+                        }
+                    } catch (Exception e) {
+                        badge.getStyleClass().add("badge-neutral");
+                    }
+                    setGraphic(badge);
+                    setText(null);
+                }
+            }
+        });
+        scoreColumn.setPrefWidth(120);
 
         table.getColumns().addAll(
                 idColumn,
@@ -118,6 +194,7 @@ public class HistoryView {
         );
 
         Label status = new Label();
+        status.getStyleClass().add("label-helper");
 
         try {
             var attempts = performanceService.getHistory(
@@ -140,30 +217,40 @@ public class HistoryView {
             );
         }
 
-        Button backButton = new Button("Back to Dashboard");
+        Button backButton = new Button("← Back to Dashboard");
+        backButton.getStyleClass().add("secondary-button");
+        backButton.setPrefHeight(40);
         backButton.setOnAction(event ->
                 Launcher.navigateToDashboard(user, stage)
         );
 
-        VBox header = new VBox(8, title, subtitle);
-        header.setPadding(new Insets(24));
+        // Header inside card
+        VBox header = new VBox(6, tag, title, subtitle);
 
-        VBox center = new VBox(14, status, table);
-        center.setPadding(new Insets(24));
+        VBox contentCard = new VBox(16, header, status, table, backButton);
+        contentCard.setPadding(new Insets(32, 36, 32, 36));
+        contentCard.getStyleClass().add("surface");
+        contentCard.setMaxWidth(1060);
         VBox.setVgrow(table, javafx.scene.layout.Priority.ALWAYS);
 
-        HBox footer = new HBox(backButton);
-        footer.setAlignment(Pos.CENTER_LEFT);
-        footer.setPadding(new Insets(0, 24, 24, 24));
+        VBox outerWrapper = new VBox(contentCard);
+        outerWrapper.setAlignment(Pos.TOP_CENTER);
+        outerWrapper.setPadding(new Insets(28, 36, 28, 36));
+        outerWrapper.setStyle("-fx-background-color: #F5F7FB;");
 
         BorderPane root = new BorderPane();
-        root.setTop(header);
-        root.setCenter(center);
-        root.setBottom(footer);
+        root.setCenter(outerWrapper);
         root.setStyle("-fx-background-color: #F5F7FB;");
 
-        stage.setTitle("Interview Coach - History");
-        stage.setScene(new Scene(root, 1100, 700));
+        Scene scene = new Scene(root, 1140, 750);
+        scene.getStylesheets().add(
+                java.util.Objects.requireNonNull(
+                        getClass().getResource("/css/app.css")
+                ).toExternalForm()
+        );
+
+        stage.setTitle("Interview Coach - Interview History");
+        stage.setScene(scene);
         stage.show();
     }
 }

@@ -100,10 +100,9 @@ public class RegisterController {
 
     @FXML
     private void handleBack() {
-        if (stage == null) {
+        if (stage != null) {
             stage.close();
         }
-        // stage.close();
     }
 
     private boolean validateName(String name, Label label) {

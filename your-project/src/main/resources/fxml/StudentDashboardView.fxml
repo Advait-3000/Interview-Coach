@@ -3,72 +3,99 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.interviewcoach.controller.StudentDashboardController"
-      alignment="CENTER"
-      spacing="18"
+      alignment="TOP_CENTER"
+      spacing="20"
       styleClass="root"
       stylesheets="@../css/app.css"
-      prefWidth="900"
-      prefHeight="600"
       VBox.vgrow="ALWAYS">
 
     <padding>
-        <Insets bottom="24" left="36" right="36" top="24"/>
+        <Insets top="24" right="32" bottom="32" left="32"/>
     </padding>
 
-    <Label fx:id="greetingLabel" styleClass="label-title" textAlignment="CENTER"/>
-    <Label fx:id="subtitleLabel" styleClass="label-helper" textAlignment="CENTER"/>
+    <VBox spacing="20" maxWidth="960" alignment="TOP_LEFT" VBox.vgrow="ALWAYS">
 
-    <Separator styleClass="surface" prefWidth="780"/>
+        <!-- Welcome Header Card -->
+        <VBox spacing="6" styleClass="surface">
+            <padding>
+                <Insets top="22" right="26" bottom="22" left="26"/>
+            </padding>
+            <Label fx:id="greetingLabel"
+                   styleClass="label-title"/>
+            <Label fx:id="subtitleLabel"
+                   styleClass="label-subtitle"/>
+        </VBox>
 
-    <VBox alignment="CENTER" spacing="16" VBox.vgrow="ALWAYS">
-        <padding>
-            <Insets top="20" bottom="10"/>
-        </padding>
+        <!-- Navigation Action Cards -->
+        <VBox spacing="12" styleClass="surface">
+            <padding>
+                <Insets top="20" right="24" bottom="22" left="24"/>
+            </padding>
+            <Label text="Modules &amp; Assessments"
+                   styleClass="label-section"/>
+            <Label text="Choose a module below to start practice questions, run mock tests, or review performance."
+                   styleClass="label-helper"/>
+            <FlowPane fx:id="actionCards"
+                      alignment="CENTER_LEFT"
+                      hgap="16"
+                      vgap="16"
+                      prefWrapLength="900"
+                      maxWidth="Infinity">
+                <padding>
+                    <Insets top="6"/>
+                </padding>
+            </FlowPane>
+        </VBox>
 
-        <FlowPane fx:id="actionCards"
+        <!-- Recent Activity Section -->
+        <VBox spacing="14" styleClass="surface">
+            <padding>
+                <Insets top="20" right="24" bottom="22" left="24"/>
+            </padding>
+
+            <!-- Section Header Row -->
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <Label fx:id="recentLabel"
+                       text="Recent attempts"
+                       styleClass="label-section"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button fx:id="historyButton"
+                        text="View all history"
+                        styleClass="secondary-button"
+                        prefWidth="135"
+                        prefHeight="34"
+                        onAction="#handleHistory"/>
+            </HBox>
+
+            <!-- Attempt Cards List -->
+            <VBox fx:id="recentSummary"
+                  spacing="10"
+                  maxWidth="Infinity">
+            </VBox>
+
+            <!-- Empty State -->
+            <VBox fx:id="emptyState"
                   alignment="CENTER"
-                  hgap="14"
-                  vgap="14"
-                  prefWidth="780"
-                  maxWidth="780"/>
-
-        <Separator styleClass="surface" prefWidth="780"/>
-
-        <HBox alignment="CENTER" spacing="14">
-            <Label fx:id="recentLabel" styleClass="label-section" prefWidth="780" textAlignment="CENTER"/>
-            <Button fx:id="historyButton"
-                    text="View history"
-                    styleClass="secondary-button"
-                    prefWidth="140"
-                    onAction="#handleHistory"/>
-        </HBox>
-
-        <VBox fx:id="recentSummary"
-              alignment="CENTER"
-              spacing="10"
-              prefWidth="780"
-              maxWidth="780">
-            <padding>
-                <Insets top="6" bottom="6"/>
-            </padding>
+                  spacing="10"
+                  maxWidth="Infinity"
+                  visible="false"
+                  managed="false"
+                  style="-fx-background-color: #F8FAFC; -fx-background-radius: 10px; -fx-border-color: #E2E8F0; -fx-border-radius: 10px; -fx-padding: 30px;">
+                <Label text="📋" style="-fx-font-size: 30px;"/>
+                <Label fx:id="emptyTitle"
+                       styleClass="label-section"
+                       textAlignment="CENTER"/>
+                <Label fx:id="emptyHint"
+                       styleClass="label-helper"
+                       textAlignment="CENTER"
+                       wrapText="true"
+                       maxWidth="500"/>
+            </VBox>
         </VBox>
 
-        <VBox fx:id="emptyState"
-              alignment="CENTER"
-              spacing="8"
-              prefWidth="780"
-              visible="false"
-              managed="false">
-            <padding>
-                <Insets top="10" bottom="10"/>
-            </padding>
-            <Label fx:id="emptyTitle" styleClass="label-section" textAlignment="CENTER"/>
-            <Label fx:id="emptyHint" styleClass="label-helper" textAlignment="CENTER" prefWidth="520"/>
-        </VBox>
     </VBox>
 </VBox>
